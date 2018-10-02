@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Date Picker Component</title>
+
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../dist/date-picker.css">
+
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../node_modules/pasoonate/dist/pasoonate.js"></script>
+    <script>
+    let trans = {
+        gregorian: {
+            day_name: {
+                sunday: "Sunday"
+            }
+        },
+        jalali: {
+            day_name: {
+                '0': 'شنبه',
+                '1': 'یک‌شنبه',
+                '2': 'دوشنبه',
+                '3': 'سه‌شنبه',
+                '4': 'چهارشنبه',
+                '5': 'پنج‌شنبه',
+                '6': 'جمعه'
+            },
+            month_name: {
+                '1': 'فروردین',
+                '2': 'اردیبهشت',
+                '3': 'خرداد',
+                '4': 'تیر',
+                '5': 'مرداد',
+                '6': 'شهریور',
+                '7': 'مهر',
+                '8': 'آبان',
+                '9': 'آذر',
+                '10': 'دی',
+                '11': 'بهمن',
+                '12': 'اسفند',
+            }
+        },
+        islamic: {},
+        shia: {}
+    };
+
+    Pasoonate.localization.setLang('fa', trans);
+    </script>
+    <script src="../dist/date-picker.js"></script>
+</head>
+<body>
+    <form action="" class="mt-3">
+        <div class="col-4">
+            <div class="form-group">
+                <input type="text" class="form-control" data-toggle="date-picker">
+            </div>
+        </div>
+    </form>
+</body>
+</html>
