@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="../dist/date-picker.css">
 
+    <script src="../node_modules/popper.js/dist/umd/popper.js"></script>
     <script src="../node_modules/jquery/dist/jquery.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="../node_modules/pasoonate/dist/pasoonate.js"></script>
@@ -51,14 +52,161 @@
     Pasoonate.localization.setLang('fa', trans);
     </script>
     <script src="../dist/date-picker.js"></script>
+    <script>
+        $(document).ready(() => {
+            const $picker = $('[data-toggle=date-picker]');
+            const pickerSelector = '[data-toggle=date-picker]';
+            const rangeSelectionSummarySelector = '#rangeSelectionSummary';
+
+            $picker.datePicker('options', {
+                data: [
+                    {
+                        day: "2018-10-20",
+                        disabled: true,
+                        class: "booked",
+                        text: "290"
+                    },
+                    {
+                        day: "2018-10-21",
+                        disabled: true,
+                        class: "booked",
+                        text: "290"
+                    },
+                    {
+                        day: "2018-11-04",
+                        disabled: true,
+                        class: "booked",
+                        text: "290"
+                    },
+                    {
+                        day: "2018-11-05",
+                        disabled: true,
+                        class: "booked",
+                        text: "290"
+                    },
+                    {
+                        day: "2018-11-15",
+                        disabled: true,
+                        class: "special",
+                        text: "320"
+                    },
+                    {
+                        day: "2018-11-17",
+                        disabled: true,
+                        class: "special",
+                        text: "320"
+                    }
+                ]
+            });
+
+            $picker.on('focus-change.bs.date-picker', (event) => {
+                if(event.focusOn === 'start') {
+                    $(event.target).closest(pickerSelector).find('[name=start_day]').focus();
+                } else if(event.focusOn === 'end') {
+                    $(event.target).closest(pickerSelector).find('[name=end_day]').focus();
+                } 
+            });
+
+            $picker.on('change.bs.date-picker', (event) => {
+                let startDay = null;
+                let endDay = null;
+                const pasoonate = Pasoonate.make();
+                const $helpText = $(event.currentTarget).find(rangeSelectionSummarySelector);
+
+                $helpText.empty();
+
+                if(event.startDay) {
+                    const [year, month, day] = event.startDay.split('-');
+                    pasoonate.gregorian().setDate(Number(year), Number(month), Number(day));
+                    startDay = pasoonate.jalali().format('yyyy/mm/dd');
+                }
+
+                if(event.endDay) {
+                    const [year, month, day] = event.endDay.split('-');
+                    pasoonate.gregorian().setDate(Number(year), Number(month), Number(day));
+                    endDay = pasoonate.jalali().format('yyyy/mm/dd');
+                }
+
+                if(event.startDay && event.endDay) {
+                    const [startYear, startMonth, startDay] = event.startDay.split('-');
+                    const start = Pasoonate.make().gregorian().setDate(Number(startYear), Number(startMonth), Number(startDay));
+
+                    const [endYear, endMonth, endDay] = event.endDay.split('-');
+                    const end = Pasoonate.make().gregorian().setDate(Number(endYear), Number(endMonth), Number(endDay));
+
+                    const text = `رزرو از روز ${start.jalali().format('yyyy/mm/dd')} به مدت ${start.diffInDays(end)} شب`;
+                    $helpText.html(text);
+                }
+                
+                $(event.currentTarget).find('input[name=start_day]').val(startDay ? startDay : '');
+                $(event.currentTarget).find('input[name=end_day]').val(endDay ? endDay : '');
+            });
+
+            $(`${pickerSelector} input[name=start_day]`).bind('focus',(event) => {
+                const target = event.target;
+                $(target).closest(pickerSelector).datePicker('focusOn', 'start');
+                
+                setTimeout(() => {
+                    $(target).closest(pickerSelector).datePicker('show');
+                    
+                    new Popper(target, $(target).closest(pickerSelector).parent().find('.date-picker')[0], {
+                        placement: 'bottom-end'
+                    });
+                }, 55);
+            });
+
+            $(`${pickerSelector} input[name=end_day]`).bind('focus', (event) => {
+                const target = event.target;
+                $(target).closest(pickerSelector).datePicker('focusOn', 'end');
+                
+                setTimeout(() => {
+                    $(target).closest(pickerSelector).datePicker('show');
+                    
+                    new Popper(target, $(target).closest(pickerSelector).parent().find('.date-picker')[0], {
+                        placement: 'bottom-start'
+                    });
+                }, 50);
+            });
+        });
+    </script>
+    <style>
+        .input-group > .input-group-append > .btn {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-top-left-radius: .25rem;
+            border-bottom-left-radius: .25rem;
+        }
+
+        .input-group > .form-control {
+            border-radius: 0;
+            margin-right: -1px;
+        }
+
+        .input-group > .form-control:first-child {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-top-right-radius: 0.25rem;
+            border-bottom-right-radius: 0.25rem;
+        }
+    </style>
 </head>
 <body>
-    <form action="" class="mt-3">
-        <div class="col-4">
-            <div class="form-group">
-                <input type="text" class="form-control" data-toggle="date-picker">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <form action="" class="mt-5">
+                    <div class="form-row" data-toggle="date-picker">
+                        <div class="form-group col">
+                            <input type="text" class="form-control" name="start_day" placeholder="تاریخ ورود">
+                        </div>
+                        <div class="form-group col">
+                            <input type="text" class="form-control" name="end_day" placeholder="تاریخ خروج">
+                        </div>
+                        <div id="rangeSelectionSummary" class="form-text text-muted col-12 text-right"></div>
+                    </div>
+                </form>
             </div>
         </div>
-    </form>
+    </div>
 </body>
 </html>

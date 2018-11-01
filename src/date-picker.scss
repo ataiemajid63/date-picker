@@ -1,11 +1,13 @@
 .date-picker {
     display: none;
     position: absolute;
-    border: 1px solid #ccc;
-    background-color: #fff;
+    border: 1px solid #ced4da;
+    background-color: #ffffff;
     margin-top: 0.5rem;
+    padding: 0.75rem;
     overflow: hidden;
     border-radius: 0.25rem;
+    width: 290px;
     z-index: 1;
 
     &.show {
@@ -15,15 +17,19 @@
     .calendar-view {
         margin-bottom: 0;
         text-align: center;
+        width: 100%;
 
-        .calendar-week-day,
+        .calendar-weekday,
         .calendar-day-view {
-            width: 14.28%;
-            padding: 0.5rem;
+            width: 37.7px;
+            border: 1px solid #ced4da ;
+            padding: 0.25rem 0 !important;
         }
 
-        .calendar-nav {
-            background-color: gray("200");
+        .calendar-weekday {
+            border-top-color: transparent; 
+            border-left-color: transparent; 
+            border-right-color: transparent; 
         }
 
         .date-picker-year-month {
@@ -36,13 +42,12 @@
             padding: 0; 
 
             .date-picker-day-number {
-                display: block;
+                width: 100%;
                 height: 100%;
-                padding: 0.5rem;
             }
             
             &:hover {
-                background-color: #5599ff !important;
+                background-color: #7cacff!important;
                 color: #fff !important;
             }
 
@@ -54,12 +59,79 @@
                 }
                 
                 &.calendar-day-view-today {
-                    background-color: #ddd;
+                    border-bottom: 3px solid #1155cc;
                 }
             }
 
             &.calendar-day-view-outfocus {
-                color: #aaa
+                color: #ced4da;
+                // visibility: hidden;
+
+                &.calendar-day-view-today {
+                    border-bottom: 4px solid #83a2d6;
+                }
+
+                &.calendar-day-view-start,
+                &.calendar-day-view-selected,
+                &.calendar-day-view-end,
+                &.calendar-day-view-between {
+                    color: #6f777e;
+                }
+            }
+
+            &.calendar-day-view-start,
+            &.calendar-day-view-selected {
+                background-color: #a4c2f4;
+            }
+
+            &.calendar-day-view-end {
+                background-color: #a4c2f4;
+            }
+
+            &.calendar-day-view-between {
+                background-color: #c9daf8;
+            }
+
+            &.calendar-day-view-disabled {
+                color: #b7b7b7;
+                background-color: #eeeeee;
+                background-image: linear-gradient(45deg,rgba(255,255,255,1) 25%,transparent 25%,transparent 50%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 75%,transparent 75%,transparent);
+                background-size: 0.75rem 0.75rem;
+
+                &:hover {
+                    color: #b7b7b7 !important;
+                    background-color: #eeeeee !important;
+                    cursor: not-allowed;
+                }
+
+                &.calendar-day-view-selectable {
+
+                    &:hover {
+                        color: #666666 !important;
+                        background-color: #bad2fc !important;
+                        background-image: linear-gradient(45deg,rgba(255,255,255,0.5) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.5) 50%,rgba(255,255,255,0.5) 75%,transparent 75%,transparent);
+                        cursor: pointer;
+                    }
+
+                    &.calendar-day-view-end {
+                        color: #333333;
+                        background-color: #a4c2f4;
+                        background-image: linear-gradient(45deg,rgba(255,255,255,0.2) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.2) 50%,rgba(255,255,255,0.2) 75%,transparent 75%,transparent);
+                    }
+                }
+            }
+
+            &.calendar-day-view-lock {
+                color: #999999;
+                background-color: #eeeeee;
+                background-image: linear-gradient(45deg,rgba(255,255,255,1) 25%,transparent 25%,transparent 50%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 75%,transparent 75%,transparent);
+                background-size: 0.75rem 0.75rem;
+
+                &:hover {
+                    color: #b7b7b7 !important;
+                    background-color: #eeeeee !important;
+                    cursor: not-allowed;
+                }
             }
 
             .calendar-view-day-wrapper {

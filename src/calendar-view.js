@@ -17,19 +17,31 @@ const CalendarView = (($) => {
 
     const Event = {
         CHANGE: `change${EVENT_KEY}`,
+        CLICK_DATA_API: `click${EVENT_KEY}${DATA_API_KEY}`,
+        OVER_DATA_API: `mouseenter${EVENT_KEY}${DATA_API_KEY}`,
+        SELECT: `select${EVENT_KEY}`,
+        OVER: `over${EVENT_KEY}`
     }
 
     const ClassName = {
+        CALENDAR_VIEW: 'calendar-view',
+        MONTH_VIEW: 'calendar-month-view',
         WEEK_VIEW: 'calendar-week-view',
         DAY_VIEW: 'calendar-day-view',
         DAY_VIEW_TODAY: 'calendar-day-view-today',
         DAY_VIEW_INFOCUS: 'calendar-day-view-infocus',
         DAY_VIEW_OUTFOCUS: 'calendar-day-view-outfocus',
         DAY_VIEW_SELECTED: 'calendar-day-view-selected',
+        DAY_VIEW_START: 'calendar-day-view-start',
+        DAY_VIEW_END: 'calendar-day-view-end',
+        DAY_VIEW_BETWEEN: 'calendar-day-view-between',
+        DAY_VIEW_DISABLED: 'calendar-day-view-disabled',
     }
 
     const Selector = {
-        MONTH_VIEW: 'tbody.calendar-month-view'
+        CALENDAR_VIEW: `.${ClassName.CALENDAR_VIEW}`,
+        MONTH_VIEW: `tbody.${ClassName.MONTH_VIEW}`,
+        DAY_VIEW: `.${ClassName.DAY_VIEW}`
     }
 
     /**
@@ -82,6 +94,100 @@ const CalendarView = (($) => {
             this._goto(date.getYear(), date.getMonth());
         }
 
+        selectDay([date]) {
+            $(this._element)
+                .find(`${Selector.DAY_VIEW}[data-gregorian-date=${date}]`)
+                .addClass(ClassName.DAY_VIEW_SELECTED);
+        }
+
+        clearSelection([date]) {
+            if(date) {
+                $(this._element).find(`${Selector.DAY_VIEW}[data-gregorian-date=${date}]`).removeClass(ClassName.DAY_VIEW_SELECTED);
+            } else {
+                $(this._element).find(Selector.DAY_VIEW).removeClass(ClassName.DAY_VIEW_SELECTED);
+            }
+        }
+
+        selectRange([start, end]) {
+            const [startYear, startMonth, startDay] = String(start).split('-');
+            const day = Pasoonate.make().gregorian().setDate(Number(startYear), Number(startMonth), Number(startDay));
+            
+            $(this._element)
+                .find(`${Selector.DAY_VIEW}[data-gregorian-date=${start}]`)
+                .addClass(ClassName.DAY_VIEW_START);
+
+            $(this._element)
+                .find(`${Selector.DAY_VIEW}[data-gregorian-date=${end}]`)
+                .addClass(ClassName.DAY_VIEW_END);
+            
+            day.addDay(1);
+            
+            while(day.format('yyyy-mm-dd') !== end) {
+                $(this._element)
+                    .find(`${Selector.DAY_VIEW}[data-gregorian-date=${day.format('yyyy-mm-dd')}]`)
+                    .addClass(ClassName.DAY_VIEW_BETWEEN);
+
+                day.addDay(1);
+            } 
+        }
+
+        clearRange() {
+            $(this._element)
+                .find(Selector.DAY_VIEW)
+                .removeClass([ClassName.DAY_VIEW_START, ClassName.DAY_VIEW_END, ClassName.DAY_VIEW_BETWEEN]);
+        }
+
+        startDay([date]) {
+            $(this._element)
+                .find(`${Selector.DAY_VIEW}[data-gregorian-date=${date}]`)
+                .addClass(ClassName.DAY_VIEW_START);
+        }
+
+        endDay([date]) {
+            $(this._element)
+                .find(`${Selector.DAY_VIEW}[data-gregorian-date=${date}]`)
+                .addClass(ClassName.DAY_VIEW_END);
+        }
+
+        disableDay([date]) {
+            $(this._element)
+                .find(`${Selector.DAY_VIEW}[data-gregorian-date=${date}]`)
+                .addClass(ClassName.DAY_VIEW_DISABLED);
+        }
+
+        enableDay([date]) {
+            $(this._element)
+                .find(`${Selector.DAY_VIEW}[data-gregorian-date=${date}]`)
+                .removeClass(ClassName.DAY_VIEW_DISABLED);
+        }
+
+        addClass([date, className]) {
+            $(this._element)
+                .find(`${Selector.DAY_VIEW}[data-gregorian-date=${date}]`)
+                .addClass(className);
+        }
+
+        removeClass([date, className]) {
+            $(this._element)
+                .find(`${Selector.DAY_VIEW}[data-gregorian-date=${date}]`)
+                .removeClass(className);
+        }
+
+        hasClass([date, className, has]) {
+            has.value = $(this._element)
+                .find(`${Selector.DAY_VIEW}[data-gregorian-date=${date}]`)
+                .hasClass(className);   
+        }
+
+        getFirstAndLastDay([range]) {
+            const $days = $(this._element).find(`${Selector.DAY_VIEW}`);
+
+            if($days.length) {
+                range.first = Number($days[0].dataset['pick']);
+                range.last = Number($days[$days.length - 1].dataset['pick']);
+            }
+        }
+
         // Private
 
         _renderMonthView() {
@@ -123,6 +229,7 @@ const CalendarView = (($) => {
 
             $day.addClass(ClassName.DAY_VIEW);
             $day.attr('data-pick', day.getTimestamp());
+            $day.attr('data-gregorian-date', Pasoonate.make(day.getTimestamp()).gregorian().format('yyyy-mm-dd'));
             
             if(day.getMonth() === this._current.getMonth()) {
                 $day.attr('data-day', day.getDay());
@@ -134,10 +241,6 @@ const CalendarView = (($) => {
 
             if(day.format('yyyy-mm-dd') === today.format('yyyy-mm-dd')) {
                 $day.addClass(ClassName.DAY_VIEW_TODAY);
-            }
-
-            if(day.format('yyyy-mm-dd') === this._current.format('yyyy-mm-dd')) {
-                $day.addClass(ClassName.DAY_VIEW_SELECTED);
             }
 
             $day.html(content);
@@ -201,7 +304,25 @@ const CalendarView = (($) => {
      * ------------------------------------------------------------------------
      */
 
-    // $(document)
+    $(document)
+        .on(Event.CLICK_DATA_API, `${Selector.DAY_VIEW}:not(${Selector.DAY_VIEW_DISABLED})`, function () {
+            $(this)
+                .closest(Selector.CALENDAR_VIEW)
+                .trigger(
+                    $.Event(Event.SELECT, {
+                        relatedTarget: this
+                    })
+                );
+        })
+        .on(Event.OVER_DATA_API, `${Selector.DAY_VIEW}:not(${Selector.DAY_VIEW_DISABLED})`, function () {
+            $(this)
+                .closest(Selector.CALENDAR_VIEW)
+                .trigger(
+                    $.Event(Event.OVER, {
+                        relatedTarget: this
+                    })
+                );
+        })
 
     /**
      * ------------------------------------------------------------------------

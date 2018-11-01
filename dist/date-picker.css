@@ -1,23 +1,29 @@
 .date-picker {
   display: none;
   position: absolute;
-  border: 1px solid #ccc;
-  background-color: #fff;
+  border: 1px solid #ced4da;
+  background-color: #ffffff;
   margin-top: 0.5rem;
+  padding: 0.75rem;
   overflow: hidden;
   border-radius: 0.25rem;
+  width: 290px;
   z-index: 1; }
   .date-picker.show {
     display: block; }
   .date-picker .calendar-view {
     margin-bottom: 0;
-    text-align: center; }
-    .date-picker .calendar-view .calendar-week-day,
+    text-align: center;
+    width: 100%; }
+    .date-picker .calendar-view .calendar-weekday,
     .date-picker .calendar-view .calendar-day-view {
-      width: 14.28%;
-      padding: 0.5rem; }
-    .date-picker .calendar-view .calendar-nav {
-      background-color: gray("200"); }
+      width: 37.7px;
+      border: 1px solid #ced4da;
+      padding: 0.25rem 0 !important; }
+    .date-picker .calendar-view .calendar-weekday {
+      border-top-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent; }
     .date-picker .calendar-view .date-picker-year-month {
       display: block;
       margin-top: 0.25rem; }
@@ -25,20 +31,56 @@
       cursor: pointer;
       padding: 0; }
       .date-picker .calendar-view .calendar-day-view .date-picker-day-number {
-        display: block;
-        height: 100%;
-        padding: 0.5rem; }
+        width: 100%;
+        height: 100%; }
       .date-picker .calendar-view .calendar-day-view:hover {
-        background-color: #5599ff !important;
+        background-color: #7cacff !important;
         color: #fff !important; }
       .date-picker .calendar-view .calendar-day-view.calendar-day-view-infocus {
         color: #333; }
         .date-picker .calendar-view .calendar-day-view.calendar-day-view-infocus .date-picker-day-number {
           font-weight: 400; }
         .date-picker .calendar-view .calendar-day-view.calendar-day-view-infocus.calendar-day-view-today {
-          background-color: #ddd; }
+          border-bottom: 3px solid #1155cc; }
       .date-picker .calendar-view .calendar-day-view.calendar-day-view-outfocus {
-        color: #aaa; }
+        color: #ced4da; }
+        .date-picker .calendar-view .calendar-day-view.calendar-day-view-outfocus.calendar-day-view-today {
+          border-bottom: 4px solid #83a2d6; }
+        .date-picker .calendar-view .calendar-day-view.calendar-day-view-outfocus.calendar-day-view-start, .date-picker .calendar-view .calendar-day-view.calendar-day-view-outfocus.calendar-day-view-selected, .date-picker .calendar-view .calendar-day-view.calendar-day-view-outfocus.calendar-day-view-end, .date-picker .calendar-view .calendar-day-view.calendar-day-view-outfocus.calendar-day-view-between {
+          color: #6f777e; }
+      .date-picker .calendar-view .calendar-day-view.calendar-day-view-start, .date-picker .calendar-view .calendar-day-view.calendar-day-view-selected {
+        background-color: #a4c2f4; }
+      .date-picker .calendar-view .calendar-day-view.calendar-day-view-end {
+        background-color: #a4c2f4; }
+      .date-picker .calendar-view .calendar-day-view.calendar-day-view-between {
+        background-color: #c9daf8; }
+      .date-picker .calendar-view .calendar-day-view.calendar-day-view-disabled {
+        color: #b7b7b7;
+        background-color: #eeeeee;
+        background-image: linear-gradient(45deg, white 25%, transparent 25%, transparent 50%, white 50%, white 75%, transparent 75%, transparent);
+        background-size: 0.75rem 0.75rem; }
+        .date-picker .calendar-view .calendar-day-view.calendar-day-view-disabled:hover {
+          color: #b7b7b7 !important;
+          background-color: #eeeeee !important;
+          cursor: not-allowed; }
+        .date-picker .calendar-view .calendar-day-view.calendar-day-view-disabled.calendar-day-view-selectable:hover {
+          color: #666666 !important;
+          background-color: #bad2fc !important;
+          background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.5) 75%, transparent 75%, transparent);
+          cursor: pointer; }
+        .date-picker .calendar-view .calendar-day-view.calendar-day-view-disabled.calendar-day-view-selectable.calendar-day-view-end {
+          color: #333333;
+          background-color: #a4c2f4;
+          background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent); }
+      .date-picker .calendar-view .calendar-day-view.calendar-day-view-lock {
+        color: #999999;
+        background-color: #eeeeee;
+        background-image: linear-gradient(45deg, white 25%, transparent 25%, transparent 50%, white 50%, white 75%, transparent 75%, transparent);
+        background-size: 0.75rem 0.75rem; }
+        .date-picker .calendar-view .calendar-day-view.calendar-day-view-lock:hover {
+          color: #b7b7b7 !important;
+          background-color: #eeeeee !important;
+          cursor: not-allowed; }
       .date-picker .calendar-view .calendar-day-view .calendar-view-day-wrapper {
         width: 100%;
         min-height: 100%;
