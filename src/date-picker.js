@@ -1,6 +1,6 @@
-// import $ from 'jquery';
-// import Pasoonate from './pasoonate';
-// import CalendarView from './calendar-view';
+import $ from 'jquery';
+import Pasoonate from './pasoonate';
+import CalendarView from './calendar-view';
 
 const DatePicker = (($) => {
     
@@ -740,4 +740,4 @@ const DatePicker = (($) => {
     return DatePicker;    
 })($);
 
-// export default DatePicker;
+export default DatePicker;
