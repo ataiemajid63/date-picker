@@ -29,7 +29,7 @@
     "popper.js": "^1.14.5"
   },
   "dependencies": {
-    "pasoon-calendar-view": "^1.0.0",
+    "pasoon-calendar-view": "^1.0.1",
     "pasoonate": "^0.2.1"
   }
 }
