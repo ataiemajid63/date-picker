@@ -8,14 +8,14 @@ const replace = require('gulp-replace');
 const regex = /^(import|export).*;{1}$/gm;
 
 gulp.task('js-build', function(){
-  return gulp.src(['./src/*.js', ], {base:'./'})
+  return gulp.src(['./node_modules/pasoon-calendar-view/src/*.js', './src/*.js'], {base:'./'})
     .pipe(concat('date-picker.js'))
     .pipe(replace(regex, ''))
     .pipe(gulp.dest('dist'))
 });
 
 gulp.task('js-minify', function(){
-  return gulp.src(['./src/*.js', ], {base:'./'})
+  return gulp.src(['./node_modules/pasoon-calendar-view/src/*.js', './src/*.js'], {base:'./'})
     .pipe(concat('date-picker.js'))
     .pipe(replace(regex, ''))
     .pipe(minify())

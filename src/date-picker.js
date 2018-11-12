@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import Pasoonate from './pasoonate';
-import CalendarView from './calendar-view';
+import Pasoonate from 'pasoonate';
+import 'calendar-view';
 
 const DatePicker = (($) => {
     
