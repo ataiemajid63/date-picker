@@ -42,5 +42,5 @@ gulp.task('minify', ['sass-minify', 'js-minify']);
 gulp.task('build', ['sass-build', 'js-build']);
  
 gulp.task('watch', function () {
-  gulp.watch('./src', ['sass-build','js-build']);
+  gulp.watch('./src/**/*.*', ['sass-build','js-build']);
 });
