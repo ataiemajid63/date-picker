@@ -54,7 +54,8 @@ const DatePicker = (($) => {
         BTN_NEXT_MONTH: '.date-picker-btn-next-month',
         BTN_PREV_MONTH: '.date-picker-btn-prev-month',
         YEAR_MONTH: '.date-picker-year-month',
-        CALENDAR_VIEW: '.calendar-view'
+        CALENDAR_VIEW: '.calendar-view',
+        NOTICE: '.date-picker-notice'
     };
 
     class DatePicker {
@@ -174,10 +175,8 @@ const DatePicker = (($) => {
         }
 
         options([options]) {
-            for(let key in options) {
-                this._options[key] = options[key];
-            }
-
+            Object.assign(this._options, options);
+            
             this.refresh();
         }
 
@@ -223,6 +222,11 @@ const DatePicker = (($) => {
             if(this._startDay && this._endDay) {
                 $calendarView.calendarView('clearRange');
                 $calendarView.calendarView('selectRange', this._startDay, this._endDay);
+            }
+
+            $calendarView.find(Selector.NOTICE).empty();
+            if(this._options.notice) {
+                $calendarView.find(Selector.NOTICE).html(this._options.notice);
             }
 
             this._assignSelectableDays();
@@ -304,36 +308,34 @@ const DatePicker = (($) => {
             let parent = target.parentNode;
 
             let $picker = $(`<div class="${ClassName.DATE_PICKER}">`);
-            let $calendarView = $('<table class="calendar-view table table-borderless">');
-            let $calendarHeader = $('<thead>')
+            let $calendarView = $('<div class="calendar-view">');
+            let $calendarHeader = $('<header>')
                 .html(
-                    $('<tr class="calendar-nav">').html(
-                        $('<th class="p-1" colspan="7">').html(
-                            '<div class="d-flex">' +
-                                `<div class="col-auto px-1"><button type="button" class="btn btn-link btn-sm ${ClassName.BTN_PREV_MONTH}"><i class="icon icon-16 icon-arrow-right-muted">قبل</i></button></div>`+
-                                `<div class="col"><span class="${ClassName.YEAR_MONTH}"></span></div>`+
-                                `<div class="col-auto px-1"><button type="button" class="btn btn-link btn-sm ${ClassName.BTN_NEXT_MONTH}"><i class="icon icon-16 icon-arrow-left-muted">بعد</i></button></div>`+
-                            '</div>'
-                        )
+                    $('<div class="calendar-nav">').html(
+                        `<div class="col-auto px-1"><button type="button" class="btn btn-link btn-sm ${ClassName.BTN_PREV_MONTH}"><i class="arrow-right"></i></button></div>`+
+                        `<div class="col"><span class="${ClassName.YEAR_MONTH}"></span></div>`+
+                        `<div class="col-auto px-1"><button type="button" class="btn btn-link btn-sm ${ClassName.BTN_NEXT_MONTH}"><i class="arrow-left"></i></button></div>`
                     )
                 )
                 .append(
-                    $('<tr class="calendar-weekdays">').html(
-                        '<th class="calendar-weekday" scope="col">ش</th>' + 
-                        '<th class="calendar-weekday" scope="col">ی</th>' + 
-                        '<th class="calendar-weekday" scope="col">د</th>' + 
-                        '<th class="calendar-weekday" scope="col">س</th>' + 
-                        '<th class="calendar-weekday" scope="col">چ</th>' + 
-                        '<th class="calendar-weekday" scope="col">پ</th>' + 
-                        '<th class="calendar-weekday" scope="col">ج</th>'
+                    $('<div class="calendar-weekdays">').html(
+                        '<div class="calendar-weekday">ش</div>' + 
+                        '<div class="calendar-weekday">ی</div>' + 
+                        '<div class="calendar-weekday">د</div>' + 
+                        '<div class="calendar-weekday">س</div>' + 
+                        '<div class="calendar-weekday">چ</div>' + 
+                        '<div class="calendar-weekday">پ</div>' + 
+                        '<div class="calendar-weekday">ج</div>'
                     )
                 );
-            let $calendarBody = $('<tbody class="calendar-month-view">');
-            let $calendarFooter = $('<tfoot>');
-            $calendarFooter.html($('<tr>').html($('<td colspan="7" class="px-0 pb-0 text-left">').html($('<button type="button" class="btn btn-outline-secondary">').text('پاک کردن').click(() => {
+            let $calendarBody = $('<div class="calendar-month-view">');
+            let $calendarFooter = $('<footer>');
+            
+            $calendarFooter.html($('<div class="date-picker-notice">').html(this._options.notice || ''));
+            $calendarFooter.append($('<button type="button" class="btn btn-sm btn-outline-secondary">').text('پاک کردن').click(() => {
                 this.clear();
                 this.hide();
-            }))));
+            }));
 
             $calendarView.append($calendarHeader).append($calendarBody).append($calendarFooter);
             $picker.append($calendarView);
@@ -341,6 +343,8 @@ const DatePicker = (($) => {
 
             $(parent).append($picker).css('position', 'relative');
 
+            $calendarView.calendarView('weekViewElement', '<div>');
+            $calendarView.calendarView('dayViewElement', '<div>');
             $calendarView.calendarView('beforeRenderDay', (date) => {
                 let classNames = '';
                 let text = '&nbsp;';
@@ -352,9 +356,9 @@ const DatePicker = (($) => {
                     text = day.text;
                 }
 
-                let $day = $(`<div class="${ClassName.DAY_NUMBER} ${classNames}}">`);
+                let $day = $(`<div class="${ClassName.DAY_NUMBER} ${classNames}">`);
     
-                $day.html(`<div>${date.jalali().getDay()}</div><div>${text}</div>`);
+                $day.html(`<div>${date.jalali().getDay()}</div><div class="extra-content">${text}</div>`);
                 
                 return $day;
             });
@@ -548,7 +552,14 @@ const DatePicker = (($) => {
 
                 if(this._startDay && this._endDay === null) {
                     //Check Disables
-                    if(days[date] && days[date].disabled) {
+                    let isSelectableDay = {value: false};
+                    $($calendarView).calendarView('hasClass', date, ClassName.SELECTABLE_DAY, isSelectableDay);
+                    let isLockDay = {value: false};
+                    $($calendarView).calendarView('hasClass', date, ClassName.LOCK_DAY, isLockDay);
+
+                    const isFirstSelectableDay = !isLockDay.value && isSelectableDay.value;
+                    
+                    if(days[date] && days[date].disabled && !isFirstSelectableDay) {
                         return true;
                     }
 
@@ -594,6 +605,7 @@ const DatePicker = (($) => {
                 pasoonate.gregorian().setDate(Number(year), Number(month), Number(day));
 
                 let findDisabled = false;
+                let findFirstDisabled = null;
                 while(pasoonate.getTimestamp() <= range.last) {
                     pasoonate.gregorian().addDay(1);
                     
@@ -601,9 +613,12 @@ const DatePicker = (($) => {
 
                     if(!findDisabled && days[d] && days[d].disabled) {
                         findDisabled = true;
+                        if(findFirstDisabled === null) {
+                            findFirstDisabled = d;
+                        }
                     }
 
-                    if(findDisabled) {
+                    if(findDisabled && findFirstDisabled !== d) {
                         $($calendarView).calendarView('addClass', d, ClassName.LOCK_DAY)
                     }
                 }
