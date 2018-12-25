@@ -1,29 +1,46 @@
-$text-color: #4a4a4a;
-$text-extra-color: #707070;
-$text-outfocus-color: #dbdbdb;
+$text-color: #333;
+$text-extra-color: #333;
+$text-outfocus-color: #ccc;
 $text-outfocus-extra-color: $text-outfocus-color;
 $text-holiday-color: #ff0000;
 $text-holiday-color-light: #f17171;
-$text-color-light: #868686;
-$text-extra-color-light: #a9a9a9;
+$text-color-light: #999;
+$text-extra-color-light: #999;
 $text-focus-color: #fff;
 
-$border-color: #dbdbdb;
+$border-color: gray;
 
-$picker-background-color: #fff;
-$disable-background-color: #e3e3e3;
-$focus-background-color: #006978;
-$hover-background-color: #56c8d8;
+@mixin date-picker-background {
+    background-color: #fff;
+}
+
+@mixin disabled-day-background {
+    background-color: #eeeeee;
+    background-image: linear-gradient(45deg,rgba(255,255,255,0.5) 25%,rgba(255,255,255,0.7) 25%,rgba(255,255,255,0.7) 50%,rgba(255,255,255,0.5) 50%,rgba(255,255,255,0.5) 75%,rgba(255,255,255,0.7) 75%,rgba(255,255,255,0.7));
+    background-size: 0.75rem 0.75rem;
+}
+
+@mixin focus-day-background {
+    background-color: #006978;
+    background-image: linear-gradient(45deg,rgba(255,255,255,0.5) 25%,rgba(255,255,255,0.7) 25%,rgba(255,255,255,0.7) 50%,rgba(255,255,255,0.5) 50%,rgba(255,255,255,0.5) 75%,rgba(255,255,255,0.7) 75%,rgba(255,255,255,0.7));
+    background-size: 0.75rem 0.75rem;
+}
+
+@mixin hover-day-background {
+    background-color: #56c8d8;
+    background-image: linear-gradient(45deg,rgba(255,255,255,0.5) 25%,rgba(255,255,255,0.7) 25%,rgba(255,255,255,0.7) 50%,rgba(255,255,255,0.5) 50%,rgba(255,255,255,0.5) 75%,rgba(255,255,255,0.7) 75%,rgba(255,255,255,0.7));
+    background-size: 0.75rem 0.75rem;
+}
 
 @mixin today {
     border: 1px solid #707070;
 }
 
 .date-picker {
+    @include date-picker-background;
     display: none;
     position: absolute;
     border: 1px solid $border-color;
-    background-color: $picker-background-color;
     color: $text-color;
     margin-top: 0.5rem;
     padding: 0;
@@ -170,7 +187,7 @@ $hover-background-color: #56c8d8;
 
                     &.calendar-day-view-disabled {
                         color: $text-color-light;
-                        background-color: $disable-background-color;
+                        @include disabled-day-background;
 
                         .date-picker-day-number {
                             
@@ -201,7 +218,7 @@ $hover-background-color: #56c8d8;
         
                     &.calendar-day-view-lock {
                         color: $text-color-light;
-                        background-color: $disable-background-color;
+                        @include disabled-day-background;
 
                         .date-picker-day-number {
                             
@@ -217,7 +234,7 @@ $hover-background-color: #56c8d8;
         
                     &.calendar-day-view-start,
                     &.calendar-day-view-selected {
-                        background-color: $focus-background-color;
+                        @include focus-day-background;
                         color: $text-focus-color;
 
                         .date-picker-day-number {
@@ -240,7 +257,7 @@ $hover-background-color: #56c8d8;
                     }
         
                     &.calendar-day-view-end {
-                        background-color: $focus-background-color;
+                        @include focus-day-background;
                         color: $text-focus-color;
 
                         .date-picker-day-number {
@@ -263,13 +280,13 @@ $hover-background-color: #56c8d8;
 
                         &.calendar-day-view-selectable {
                             background-image: none;
-                            background-color: $focus-background-color;
+                            @include focus-day-background;
                             color: $text-focus-color;
                         }
                     }
         
                     &.calendar-day-view-between {
-                        background-color: $hover-background-color;
+                        @include hover-day-background;
 
                         &.calendar-day-view-outfocus {
                             color: $text-color-light !important;
@@ -307,7 +324,6 @@ $hover-background-color: #56c8d8;
 }
 
 input[data-toggle=date-picker] {
-    // @include icon-calendar-muted;
     background-size: auto 60%;
     background-position: left .5rem center;
 }
