@@ -61,67 +61,69 @@
             $picker.datePicker('options', {
                 data: [
                     {
-                        day: "2018-10-20",
+                        day: "2018-12-20",
                         disabled: true,
                         class: "booked",
                         text: "290"
                     },
                     {
-                        day: "2018-10-21",
+                        day: "2018-12-21",
                         disabled: false,
                         class: "",
                         text: "290"
                     },
                     {
-                        day: "2018-10-22",
+                        day: "2018-12-22",
                         disabled: false,
                         class: "",
                         text: "290"
                     },
                     {
-                        day: "2018-10-23",
+                        day: "2018-12-23",
                         disabled: false,
                         class: "",
                         text: "290"
                     },
                     {
-                        day: "2018-10-24",
+                        day: "2018-12-24",
                         disabled: false,
                         class: "",
                         text: "290"
                     },
                     {
-                        day: "2018-10-25",
+                        day: "2018-12-25",
                         disabled: false,
                         class: "",
                         text: "290"
                     },
                     {
-                        day: "2018-11-04",
+                        day: "2019-01-04",
                         disabled: true,
                         class: "booked",
                         text: "290"
                     },
                     {
-                        day: "2018-11-05",
+                        day: "2019-01-05",
                         disabled: true,
                         class: "booked",
                         text: "290"
                     },
                     {
-                        day: "2018-11-15",
+                        day: "2019-01-15",
                         disabled: true,
                         class: "special",
                         text: "320"
                     },
                     {
-                        day: "2018-11-17",
+                        day: "2019-01-17",
                         disabled: true,
                         class: "special",
                         text: "320"
                     }
                 ],
-                notice: "به روز شده در ۳ روز پیش"
+                notice: "به روز شده در ۳ روز پیش",
+                lockBefore: '2018-12-20',
+                lockAfter: '2019-01-09',
             });
 
             $picker.on('focus-change.bs.date-picker', (event) => {

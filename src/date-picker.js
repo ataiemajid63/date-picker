@@ -164,7 +164,8 @@ const DatePicker = (($) => {
             this._focusOn = 'start';
             $(this._element).parent().find(Selector.CALENDAR_VIEW).calendarView('clearRange');
 
-            this._autoUnlockDays();
+            this._unlockCurrentDays();
+            this._lockDays(this._options.lockBefore, this._options.lockAfter);
             
             const changeEvent = $.Event(Event.CHANGE, {
                 startDay: this._startDay,
@@ -230,8 +231,9 @@ const DatePicker = (($) => {
             }
 
             this._assignSelectableDays();
-            this._autoUnlockDays();
+            this._unlockCurrentDays();
             this._autoLockDays();
+            this._lockDays(this._options.lockBefore, this._options.lockAfter);
         }
 
         nextMonth() {
@@ -260,8 +262,9 @@ const DatePicker = (($) => {
             }
 
             this._assignSelectableDays();
-            this._autoUnlockDays();
+            this._unlockCurrentDays();
             this._autoLockDays();
+            this._lockDays(this._options.lockBefore, this._options.lockAfter);
         }
 
         prevMonth() {
@@ -290,8 +293,9 @@ const DatePicker = (($) => {
             }
 
             this._assignSelectableDays();
-            this._autoUnlockDays();
+            this._unlockCurrentDays();
             this._autoLockDays();
+            this._lockDays(this._options.lockBefore, this._options.lockAfter);
         }
 
         // Private
@@ -529,8 +533,9 @@ const DatePicker = (($) => {
     
                 $(this._element).trigger(changeEvent);
 
-                this._autoUnlockDays();
+                this._unlockCurrentDays();
                 this._autoLockDays();
+                this._lockDays(this._options.lockBefore, this._options.lockAfter);
 
                 this.hide();
             });
@@ -641,7 +646,41 @@ const DatePicker = (($) => {
             }
         }
 
-        _autoUnlockDays() {
+        _lockDays(before, after) {
+            const $calendarView = $(this._element.parentNode).find(Selector.CALENDAR_VIEW);
+            const days = this._dataKeyByDay();
+            const range = {};
+            
+            $calendarView.calendarView('getFirstAndLastDay', range);
+
+            if(before) {
+                const [year, month, day] = before.split('-');
+                const pasoonate = Pasoonate.make();
+                pasoonate.gregorian().setDate(Number(year), Number(month), Number(day));
+
+                while(pasoonate.getTimestamp() > range.first) {
+                    pasoonate.gregorian().subDay(1);
+                    
+                    const d = pasoonate.gregorian().format('yyyy-mm-dd');
+                    $($calendarView).calendarView('addClass', d, ClassName.LOCK_DAY)
+                }
+            }
+
+            if(after) {
+                const [year, month, day] = after.split('-');
+                const pasoonate = Pasoonate.make();
+                pasoonate.gregorian().setDate(Number(year), Number(month), Number(day));
+
+                while(pasoonate.getTimestamp() < range.last) {
+                    pasoonate.gregorian().addDay(1);
+                    
+                    const d = pasoonate.gregorian().format('yyyy-mm-dd');
+                    $($calendarView).calendarView('addClass', d, ClassName.LOCK_DAY)
+                }
+            }
+        }
+
+        _unlockCurrentDays() {
             const $calendarView = $(this._element.parentNode).find(Selector.CALENDAR_VIEW);
             const range = {};
 
