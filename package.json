@@ -1,5 +1,5 @@
 {
-  "name": "date-picker",
+  "name": "miz-date-picker",
   "version": "1.0.0",
   "description": "Date picker component",
   "main": "src/date-picker.js",
