@@ -1,6 +1,6 @@
 {
   "name": "miz-date-picker",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Date picker component",
   "main": "src/date-picker.js",
   "directories": {
@@ -30,6 +30,6 @@
   },
   "dependencies": {
     "pasoon-calendar-view": "^1.0.4",
-    "pasoonate": "^0.2.1"
+    "pasoonate": "^0.2.2"
   }
 }
