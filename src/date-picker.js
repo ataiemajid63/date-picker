@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import Pasoonate from 'pasoonate';
-import 'calendar-view';
+import 'pasoon-calendar-view';
 
 const DatePicker = (($) => {
     
