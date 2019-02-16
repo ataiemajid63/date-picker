@@ -372,7 +372,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.3';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
@@ -573,6 +573,21 @@ const DatePicker = (($) => {
                 }
             }
 
+            this._assignSelectableDays();
+            this._unlockCurrentDays();
+            this._autoLockDays();
+            this._lockDays(this._options.lockBefore, this._options.lockAfter);
+
+            if(this._options.startDay) {
+                this._startDay = this._options.startDay;
+                this._options.startDay = undefined;
+            }
+
+            if(this._options.endDay) {
+                this._endDay = this._options.endDay;
+                this._options.endDay = undefined;
+            }
+
             if(this._startDay) {
                 $calendarView.calendarView('startDay', this._startDay);
             }
@@ -590,11 +605,6 @@ const DatePicker = (($) => {
             if(this._options.notice) {
                 $calendarView.find(Selector.NOTICE).html(this._options.notice);
             }
-
-            this._assignSelectableDays();
-            this._unlockCurrentDays();
-            this._autoLockDays();
-            this._lockDays(this._options.lockBefore, this._options.lockAfter);
         }
 
         nextMonth() {
@@ -665,8 +675,8 @@ const DatePicker = (($) => {
             if (this._element.parentNode &&
                 this._element.parentNode.nodeType === Node.ELEMENT_NODE &&
                 ($(this._element).hasClass(ClassName.DISABLED) ||
-                 this._element.hasAttribute('disabled'))) {
-                return;
+                this._element.hasAttribute('disabled'))) {
+                    return;
             }
             
             let target = this._element;
