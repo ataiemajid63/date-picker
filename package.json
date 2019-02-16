@@ -30,6 +30,6 @@
   },
   "dependencies": {
     "pasoon-calendar-view": "^1.0.4",
-    "pasoonate": "^0.2.2"
+    "pasoonate": "^0.2.4"
   }
 }
