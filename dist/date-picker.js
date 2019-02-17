@@ -372,7 +372,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.1.1';
+    const VERSION = '1.1.2';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
@@ -882,6 +882,10 @@ const DatePicker = (($) => {
                             return true;
                         }
     
+                        if(pasoonate.gregorian().format('yyyy-mm-dd') <= this._startDay) {
+                            return true;
+                        }
+
                         while(pasoonate.gregorian().format('yyyy-mm-dd') > this._startDay) {
                             pasoonate.subDay(1);
                             const d = pasoonate.gregorian().format('yyyy-mm-dd');
