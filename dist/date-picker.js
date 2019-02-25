@@ -9,7 +9,7 @@ const CalendarView = (($) => {
      */
 
     const NAME = 'calendarView'
-    const VERSION = '1.0.0'
+    const VERSION = '1.0.5'
     const DATA_KEY = 'bs.calendar-view'
     const EVENT_KEY = `.${DATA_KEY}`
     const DATA_API_KEY = '.data-api'
@@ -140,9 +140,9 @@ const CalendarView = (($) => {
             
             day.addDay(1);
             
-            while(day.format('yyyy-mm-dd') !== end) {
+            while(day.format('yyyy-MM-dd') !== end) {
                 $(this._element)
-                    .find(`${Selector.DAY_VIEW}[data-gregorian-date=${day.format('yyyy-mm-dd')}]`)
+                    .find(`${Selector.DAY_VIEW}[data-gregorian-date=${day.format('yyyy-MM-dd')}]`)
                     .addClass(ClassName.DAY_VIEW_BETWEEN);
 
                 day.addDay(1);
@@ -247,7 +247,7 @@ const CalendarView = (($) => {
 
             $day.addClass(ClassName.DAY_VIEW);
             $day.attr('data-pick', day.getTimestamp());
-            $day.attr('data-gregorian-date', Pasoonate.make(day.getTimestamp()).gregorian().format('yyyy-mm-dd'));
+            $day.attr('data-gregorian-date', Pasoonate.make(day.getTimestamp()).gregorian().format('yyyy-MM-dd'));
             
             if(day.getMonth() === this._current.getMonth()) {
                 $day.attr('data-day', day.getDay());
@@ -257,7 +257,7 @@ const CalendarView = (($) => {
                 $day.addClass(ClassName.DAY_VIEW_OUTFOCUS);
             }
 
-            if(day.format('yyyy-mm-dd') === today.format('yyyy-mm-dd')) {
+            if(day.format('yyyy-MM-dd') === today.format('yyyy-MM-dd')) {
                 $day.addClass(ClassName.DAY_VIEW_TODAY);
             }
 
@@ -372,7 +372,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.1.2';
+    const VERSION = '1.2.0';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
@@ -651,8 +651,8 @@ const DatePicker = (($) => {
                 relatedTarget: this._element,
                 newMonth: newMonth,
                 oldMonth: oldMonth,
-                firstDay: firstDay.gregorian().format('yyyy-mm-dd'),
-                lastDay: lastDay.gregorian().format('yyyy-mm-dd')
+                firstDay: firstDay.gregorian().format('yyyy-MM-dd'),
+                lastDay: lastDay.gregorian().format('yyyy-MM-dd')
             });
 
             $(this._element).trigger(monthChangeEvent);
@@ -702,8 +702,8 @@ const DatePicker = (($) => {
                 relatedTarget: this._element,
                 newMonth: newMonth,
                 oldMonth: oldMonth,
-                firstDay: firstDay.gregorian().format('yyyy-mm-dd'),
-                lastDay: lastDay.gregorian().format('yyyy-mm-dd')
+                firstDay: firstDay.gregorian().format('yyyy-MM-dd'),
+                lastDay: lastDay.gregorian().format('yyyy-MM-dd')
             });
 
             $(this._element).trigger(monthChangeEvent);
@@ -767,7 +767,7 @@ const DatePicker = (($) => {
                 let day;
                 let data = this._dataKeyByDay();
 
-                if(day = data[date.gregorian().format('yyyy-mm-dd')]) {
+                if(day = data[date.gregorian().format('yyyy-MM-dd')]) {
                     classNames = day.class;
                     text = day.text;
                 }
@@ -821,9 +821,9 @@ const DatePicker = (($) => {
                                 return true;
                             }
         
-                            while(pasoonate.gregorian().format('yyyy-mm-dd') !== this._endDay) {
+                            while(pasoonate.gregorian().format('yyyy-MM-dd') !== this._endDay) {
                                 pasoonate.addDay(1);
-                                const d = pasoonate.gregorian().format('yyyy-mm-dd');
+                                const d = pasoonate.gregorian().format('yyyy-MM-dd');
                                 if(days[d] && days[d].disabled && d !== this._endDay) {
                                     return true;
                                 }
@@ -893,9 +893,9 @@ const DatePicker = (($) => {
                                 return true;
                             }
         
-                            while(pasoonate.gregorian().format('yyyy-mm-dd') !== this._startDay) {
+                            while(pasoonate.gregorian().format('yyyy-MM-dd') !== this._startDay) {
                                 pasoonate.subDay(1);
-                                const d = pasoonate.gregorian().format('yyyy-mm-dd');
+                                const d = pasoonate.gregorian().format('yyyy-MM-dd');
                                 if(days[d] && days[d].disabled) {
                                     return true;
                                 }
@@ -923,13 +923,13 @@ const DatePicker = (($) => {
                             return true;
                         }
     
-                        if(pasoonate.gregorian().format('yyyy-mm-dd') <= this._startDay) {
+                        if(pasoonate.gregorian().format('yyyy-MM-dd') <= this._startDay) {
                             return true;
                         }
 
-                        while(pasoonate.gregorian().format('yyyy-mm-dd') > this._startDay) {
+                        while(pasoonate.gregorian().format('yyyy-MM-dd') > this._startDay) {
                             pasoonate.subDay(1);
-                            const d = pasoonate.gregorian().format('yyyy-mm-dd');
+                            const d = pasoonate.gregorian().format('yyyy-MM-dd');
                             if(days[d] && days[d].disabled) {
                                 return true;
                             }
@@ -984,9 +984,9 @@ const DatePicker = (($) => {
                         return true;
                     }
 
-                    while(pasoonate.gregorian().format('yyyy-mm-dd') !== this._startDay) {
+                    while(pasoonate.gregorian().format('yyyy-MM-dd') !== this._startDay) {
                         pasoonate.subDay(1);
-                        const d = pasoonate.gregorian().format('yyyy-mm-dd');
+                        const d = pasoonate.gregorian().format('yyyy-MM-dd');
                         if(days[d] && days[d].disabled) {
                             return true;
                         }
@@ -1030,7 +1030,7 @@ const DatePicker = (($) => {
                 while(pasoonate.getTimestamp() <= range.last) {
                     pasoonate.gregorian().addDay(1);
                     
-                    const d = pasoonate.gregorian().format('yyyy-mm-dd');
+                    const d = pasoonate.gregorian().format('yyyy-MM-dd');
 
                     if(!findDisabled && days[d] && days[d].disabled) {
                         findDisabled = true;
@@ -1049,7 +1049,7 @@ const DatePicker = (($) => {
                 while(pasoonate.getTimestamp() >= range.first) {
                     pasoonate.gregorian().subDay(1);
                     
-                    const d = pasoonate.gregorian().format('yyyy-mm-dd');
+                    const d = pasoonate.gregorian().format('yyyy-MM-dd');
 
                     if(!findDisabled && days[d] && days[d].disabled) {
                         findDisabled = true;
@@ -1077,7 +1077,7 @@ const DatePicker = (($) => {
                 while(pasoonate.getTimestamp() > range.first) {
                     pasoonate.gregorian().subDay(1);
                     
-                    const d = pasoonate.gregorian().format('yyyy-mm-dd');
+                    const d = pasoonate.gregorian().format('yyyy-MM-dd');
                     $($calendarView).calendarView('addClass', d, ClassName.LOCK_DAY)
                 }
             }
@@ -1090,7 +1090,7 @@ const DatePicker = (($) => {
                 while(pasoonate.getTimestamp() < range.last) {
                     pasoonate.gregorian().addDay(1);
                     
-                    const d = pasoonate.gregorian().format('yyyy-mm-dd');
+                    const d = pasoonate.gregorian().format('yyyy-MM-dd');
                     $($calendarView).calendarView('addClass', d, ClassName.LOCK_DAY)
                 }
             }
@@ -1106,7 +1106,7 @@ const DatePicker = (($) => {
 
             while(firstDay.getTimestamp() <= range.last) {
                 firstDay.gregorian().addDay(1);
-                $calendarView.calendarView('removeClass', firstDay.gregorian().format('yyyy-mm-dd'), ClassName.LOCK_DAY);
+                $calendarView.calendarView('removeClass', firstDay.gregorian().format('yyyy-MM-dd'), ClassName.LOCK_DAY);
             }
         }
 
@@ -1121,7 +1121,7 @@ const DatePicker = (($) => {
             let selectableDay = 0;
 
             while(pasoonate.getTimestamp() <= range.last) {
-                const temp = pasoonate.gregorian().format('yyyy-mm-dd');
+                const temp = pasoonate.gregorian().format('yyyy-MM-dd');
                 
                 if(days[temp] && days[temp].disabled) {
                     selectableDay = selectableDay === 0 ? 1 : 2;

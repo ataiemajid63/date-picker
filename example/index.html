@@ -147,13 +147,13 @@
                 if(event.startDay) {
                     const [year, month, day] = event.startDay.split('-');
                     pasoonate.gregorian().setDate(Number(year), Number(month), Number(day));
-                    startDay = pasoonate.jalali().format('yyyy/mm/dd');
+                    startDay = pasoonate.jalali().format('yyyy/MM/dd');
                 }
 
                 if(event.endDay) {
                     const [year, month, day] = event.endDay.split('-');
                     pasoonate.gregorian().setDate(Number(year), Number(month), Number(day));
-                    endDay = pasoonate.jalali().format('yyyy/mm/dd');
+                    endDay = pasoonate.jalali().format('yyyy/MM/dd');
                 }
 
                 if(event.startDay && event.endDay) {
@@ -163,7 +163,7 @@
                     const [endYear, endMonth, endDay] = event.endDay.split('-');
                     const end = Pasoonate.make().gregorian().setDate(Number(endYear), Number(endMonth), Number(endDay));
 
-                    const text = `رزرو از روز ${start.jalali().format('yyyy/mm/dd')} به مدت ${start.diffInDays(end)} شب`;
+                    const text = `رزرو از روز ${start.jalali().format('yyyy/MM/dd')} به مدت ${start.diffInDays(end)} شب`;
                     $helpText.html(text);
                 }
                 
