@@ -11,7 +11,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.1.2';
+    const VERSION = '1.2.0';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
@@ -23,6 +23,7 @@ const DatePicker = (($) => {
         SHOW: `show${EVENT_KEY}`,
         SHOWN: `shown${EVENT_KEY}`,
         FOCUS_CHANGE: `focus-change${EVENT_KEY}`,
+        MONTH_CHANGE: `month-change${EVENT_KEY}`,
         CHANGE: `change${EVENT_KEY}`,
         CLICK_DATA_API: `click${EVENT_KEY}${DATA_API_KEY}`,
         OVER_DATA_API: `mouseover${EVENT_KEY}${DATA_API_KEY}`,
@@ -275,6 +276,26 @@ const DatePicker = (($) => {
             this._unlockCurrentDays();
             this._autoLockDays();
             this._lockDays(this._options.lockBefore, this._options.lockAfter);
+
+            //#region Month Change Event
+            let monthRange = {};
+            $calendarView.calendarView('getFirstAndLastDay', monthRange);      
+            
+            const firstDay = Pasoonate.make(monthRange.first);
+            const lastDay = Pasoonate.make(monthRange.last);
+            const newMonth = Pasoonate.make(monthRange.first).jalali().addDay(15).getMonth();
+            const oldMonth = Pasoonate.make(monthRange.first).jalali().addDay(15).subMonth(1).getMonth();
+            
+            const monthChangeEvent = $.Event(Event.MONTH_CHANGE, {
+                relatedTarget: this._element,
+                newMonth: newMonth,
+                oldMonth: oldMonth,
+                firstDay: firstDay.gregorian().format('yyyy-mm-dd'),
+                lastDay: lastDay.gregorian().format('yyyy-mm-dd')
+            });
+
+            $(this._element).trigger(monthChangeEvent);
+            //#endregion
         }
 
         prevMonth() {
@@ -306,6 +327,26 @@ const DatePicker = (($) => {
             this._unlockCurrentDays();
             this._autoLockDays();
             this._lockDays(this._options.lockBefore, this._options.lockAfter);
+
+            //#region Month Change Event
+            let monthRange = {};
+            $calendarView.calendarView('getFirstAndLastDay', monthRange);      
+            
+            const firstDay = Pasoonate.make(monthRange.first);
+            const lastDay = Pasoonate.make(monthRange.last);
+            const newMonth = Pasoonate.make(monthRange.first).jalali().addDay(15).getMonth();
+            const oldMonth = Pasoonate.make(monthRange.first).jalali().addDay(15).addMonth(1).getMonth();
+            
+            const monthChangeEvent = $.Event(Event.MONTH_CHANGE, {
+                relatedTarget: this._element,
+                newMonth: newMonth,
+                oldMonth: oldMonth,
+                firstDay: firstDay.gregorian().format('yyyy-mm-dd'),
+                lastDay: lastDay.gregorian().format('yyyy-mm-dd')
+            });
+
+            $(this._element).trigger(monthChangeEvent);
+            //#endregion
         }
 
         // Private

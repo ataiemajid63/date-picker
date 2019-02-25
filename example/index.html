@@ -171,6 +171,13 @@
                 $(event.currentTarget).find('input[name=end_day]').val(endDay ? endDay : '');
             });
 
+            $picker.on('month-change.bs.date-picker', (event) => {
+                console.log('First Day ', event.firstDay);
+                console.log('Last Day ', event.lastDay);
+                console.log('New Month ', event.newMonth);
+                console.log('Old Month ', event.oldMonth);
+            });
+
             $(`${pickerSelector} input[name=start_day]`).bind('focus',(event) => {
                 const target = event.target;
                 $(target).closest(pickerSelector).datePicker('focusOn', 'start');
