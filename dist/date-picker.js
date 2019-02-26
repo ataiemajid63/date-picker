@@ -9,7 +9,7 @@ const CalendarView = (($) => {
      */
 
     const NAME = 'calendarView'
-    const VERSION = '1.0.5'
+    const VERSION = '1.0.6'
     const DATA_KEY = 'bs.calendar-view'
     const EVENT_KEY = `.${DATA_KEY}`
     const DATA_API_KEY = '.data-api'
@@ -372,7 +372,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.2.0';
+    const VERSION = '1.2.1';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';

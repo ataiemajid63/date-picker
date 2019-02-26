@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import 'pasoonate';
+import Pasoonate from 'pasoonate';
 import 'pasoon-calendar-view';
 
 const DatePicker = (($) => {
@@ -11,7 +11,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.2.1';
+    const VERSION = '1.2.3';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
