@@ -12,6 +12,35 @@
   z-index: 1; }
   .date-picker.show {
     display: block; }
+  .date-picker .date-picker-header {
+    display: none; }
+    .date-picker .date-picker-header .date-picker-title-bar {
+      background-color: #00bbff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      color: #fff;
+      font-weight: 600; }
+      .date-picker .date-picker-header .date-picker-title-bar .date-picker-close {
+        background-color: #fff; }
+    .date-picker .date-picker-header .date-picker-inputs {
+      display: flex;
+      align-items: center;
+      padding: .5rem;
+      box-shadow: 0 4px 6px 0px rgba(0, 0, 0, 0.2);
+      margin-bottom: 0.5rem; }
+      .date-picker .date-picker-header .date-picker-inputs #datePickerInputCheckin {
+        margin: 0 .5rem;
+        text-align: center; }
+      .date-picker .date-picker-header .date-picker-inputs #datePickerInputCheckout {
+        margin: 0 .5rem;
+        text-align: center; }
+      .date-picker .date-picker-header .date-picker-inputs .focus {
+        background-color: #fff;
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }
   .date-picker .calendar-view {
     margin: 0;
     text-align: center;
@@ -170,6 +199,19 @@
       .date-picker .calendar-view footer .date-picker-notice {
         color: #999;
         font-size: 90%; }
+
+@media (max-width: 767.98px) {
+  .date-picker {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0; }
+    .date-picker .date-picker-header {
+      display: block !important; } }
 
 input[data-toggle=date-picker] {
   background-size: auto 60%;

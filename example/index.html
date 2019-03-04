@@ -13,7 +13,7 @@
     <script src="../node_modules/jquery/dist/jquery.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="../node_modules/pasoonate/dist/pasoonate.js"></script>
-    <script>
+    <!-- <script>
     let trans = {
         gregorian: {
             day_name: {
@@ -50,7 +50,7 @@
     };
 
     Pasoonate.localization.setLang('fa', trans);
-    </script>
+    </script> -->
     <script src="../dist/date-picker.js"></script>
     <script>
         $(document).ready(() => {
@@ -122,8 +122,8 @@
                     }
                 ],
                 notice: "به روز شده در ۳ روز پیش",
-                startDay: '2019-01-01',
-                endDay: '2019-01-05'
+                // startDay: '2019-01-01',
+                // endDay: '2019-01-05'
                 // lockBefore: '2018-12-20',
                 // lockAfter: '2019-01-09',
             });
@@ -185,9 +185,9 @@
                 setTimeout(() => {
                     $(target).closest(pickerSelector).datePicker('show');
                     
-                    new Popper(target, $(target).closest(pickerSelector).parent().find('.date-picker')[0], {
-                        placement: 'bottom-end'
-                    });
+                    // new Popper(target, $(target).closest(pickerSelector).parent().find('.date-picker')[0], {
+                    //     placement: 'bottom-end'
+                    // });
                 }, 55);
             });
 
@@ -198,9 +198,9 @@
                 setTimeout(() => {
                     $(target).closest(pickerSelector).datePicker('show');
                     
-                    new Popper(target, $(target).closest(pickerSelector).parent().find('.date-picker')[0], {
-                        placement: 'bottom-start'
-                    });
+                    // new Popper(target, $(target).closest(pickerSelector).parent().find('.date-picker')[0], {
+                    //     placement: 'bottom-start'
+                    // });
                 }, 50);
             });
         });
@@ -233,10 +233,10 @@
                 <form action="" class="mt-5">
                     <div class="form-row" data-toggle="date-picker">
                         <div class="form-group col">
-                            <input type="text" class="form-control" name="start_day" placeholder="تاریخ ورود">
+                            <input type="text" class="form-control" name="start_day" autocomplete="off" placeholder="تاریخ ورود">
                         </div>
                         <div class="form-group col">
-                            <input type="text" class="form-control" name="end_day" placeholder="تاریخ خروج">
+                            <input type="text" class="form-control" name="end_day" autocomplete="off" placeholder="تاریخ خروج">
                         </div>
                         <div id="rangeSelectionSummary" class="form-text text-muted col-12 text-right"></div>
                     </div>

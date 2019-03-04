@@ -56,13 +56,18 @@ const DatePicker = (($) => {
         BTN_PREV_MONTH: '.date-picker-btn-prev-month',
         YEAR_MONTH: '.date-picker-year-month',
         CALENDAR_VIEW: '.calendar-view',
-        NOTICE: '.date-picker-notice'
+        NOTICE: '.date-picker-notice',
+        INPUT_CHECKIN: '.date-picker-header #datePickerInputCheckin',
+        INPUT_CHECKOUT: '.date-picker-header #datePickerInputCheckout',
+        BTN_CLOSE: '.date-picker-header .date-picker-close'
+
     };
 
     class DatePicker {
 
         constructor(element) {
             this._element = element;
+            this._parent = element.parentNode;
             this._options = {};
             this._startDay = null;
             this._endDay = null;
@@ -167,6 +172,9 @@ const DatePicker = (($) => {
 
             this._unlockCurrentDays();
             this._lockDays(this._options.lockBefore, this._options.lockAfter);
+
+            $(this._parent).find(Selector.INPUT_CHECKIN).removeClass('focus').html('ورود');
+            $(this._parent).find(Selector.INPUT_CHECKOUT).removeClass('focus').html('خروج');
             
             const changeEvent = $.Event(Event.CHANGE, {
                 startDay: this._startDay,
@@ -183,11 +191,16 @@ const DatePicker = (($) => {
         }
 
         focusOn([type]) {
+            $(this._parent).find(Selector.INPUT_CHECKIN).removeClass('focus');
+            $(this._parent).find(Selector.INPUT_CHECKOUT).removeClass('focus');
+
             if(type === 'start') {
                 this._focusOn = type;
+                $(this._parent).find(Selector.INPUT_CHECKIN).addClass('focus');
             } else if(type === 'end') {
                 if(this._startDay === null) {
                     this._focusOn = 'start';
+                    $(this._parent).find(Selector.INPUT_CHECKIN).addClass('focus');
 
                     const focusChangeEvent = $.Event(Event.FOCUS_CHANGE, {
                         relatedTarget: this._element,
@@ -197,6 +210,7 @@ const DatePicker = (($) => {
                     $(this._element).trigger(focusChangeEvent);
                 } else {
                     this._focusOn = type;
+                    $(this._parent).find(Selector.INPUT_CHECKOUT).addClass('focus');
                 }
             }
         }
@@ -364,27 +378,43 @@ const DatePicker = (($) => {
 
             let $picker = $(`<div class="${ClassName.DATE_PICKER}">`);
             let $calendarView = $('<div class="calendar-view">');
-            let $calendarHeader = $('<header>')
-                .html(
-                    $('<div class="calendar-nav">').html(
-                        `<div class="col-auto px-1"><button type="button" class="btn btn-link btn-sm ${ClassName.BTN_PREV_MONTH}"><i class="arrow-right"></i></button></div>`+
-                        `<div class="col"><span class="${ClassName.YEAR_MONTH}"></span></div>`+
-                        `<div class="col-auto px-1"><button type="button" class="btn btn-link btn-sm ${ClassName.BTN_NEXT_MONTH}"><i class="arrow-left"></i></button></div>`
-                    )
-                )
-                .append(
-                    $('<div class="calendar-weekdays">').html(
-                        '<div class="calendar-weekday">ش</div>' + 
-                        '<div class="calendar-weekday">ی</div>' + 
-                        '<div class="calendar-weekday">د</div>' + 
-                        '<div class="calendar-weekday">س</div>' + 
-                        '<div class="calendar-weekday">چ</div>' + 
-                        '<div class="calendar-weekday">پ</div>' + 
-                        '<div class="calendar-weekday">ج</div>'
-                    )
-                );
+            let $calendarHeader = $('<header>');
             let $calendarBody = $('<div class="calendar-month-view">');
             let $calendarFooter = $('<footer>');
+            let $pickerHeader = $('<div class="date-picker-header">');
+
+            $pickerHeader.append(
+                $('<div class="date-picker-title-bar">').html(
+                    '<span>تاریخ ورود و خروج</span>' +
+                    '<button type="button" class="btn date-picker-close"></button>'
+                )
+            );
+            $pickerHeader.append(
+                $('<div class="date-picker-inputs">').html(
+                    '<div class="form-control focus" id="datePickerInputCheckin" >ورود</div>' +
+                    '<span>-</span>' +
+                    '<div class="form-control" id="datePickerInputCheckout">خروج</div>' 
+                )
+            );
+
+            $calendarHeader.append(
+                $('<div class="calendar-nav">').html(
+                    `<div class="col-auto px-1"><button type="button" class="btn btn-link btn-sm ${ClassName.BTN_PREV_MONTH}"><i class="arrow-right"></i></button></div>`+
+                    `<div class="col"><span class="${ClassName.YEAR_MONTH}"></span></div>`+
+                    `<div class="col-auto px-1"><button type="button" class="btn btn-link btn-sm ${ClassName.BTN_NEXT_MONTH}"><i class="arrow-left"></i></button></div>`
+                )
+            );
+            $calendarHeader.append(
+                $('<div class="calendar-weekdays">').html(
+                    '<div class="calendar-weekday">ش</div>' + 
+                    '<div class="calendar-weekday">ی</div>' + 
+                    '<div class="calendar-weekday">د</div>' + 
+                    '<div class="calendar-weekday">س</div>' + 
+                    '<div class="calendar-weekday">چ</div>' + 
+                    '<div class="calendar-weekday">پ</div>' + 
+                    '<div class="calendar-weekday">ج</div>'
+                )
+            );
             
             $calendarFooter.html($('<div class="date-picker-notice">').html(this._options.notice || ''));
             $calendarFooter.append($('<button type="button" class="btn btn-sm btn-outline-secondary">').text('پاک کردن').click(() => {
@@ -393,7 +423,7 @@ const DatePicker = (($) => {
             }));
 
             $calendarView.append($calendarHeader).append($calendarBody).append($calendarFooter);
-            $picker.append($calendarView);
+            $picker.append($pickerHeader).append($calendarView);
             $picker.data('target', target);
 
             $(parent).append($picker).css('position', 'relative');
@@ -421,9 +451,9 @@ const DatePicker = (($) => {
             $calendarView.on('select.bs.calendar-view', (event) => {
                 const selectedDay = event.relatedTarget.dataset.gregorianDate;
                 const days = this._dataKeyByDay();
-                const [year, month, day] = selectedDay.split('-');
-                const pasoonate = Pasoonate.make();
-                pasoonate.gregorian().setDate(Number(year), Number(month), Number(day));
+                const pasoonate = Pasoonate.make().gregorian(selectedDay);
+                const inputCheckin = $(parent).find('#datePickerInputCheckin')[0];
+                const inputCheckout = $(parent).find('#datePickerInputCheckout')[0];
 
                 let isSelectableDay = {};
                 $calendarView.calendarView('hasClass', selectedDay, ClassName.SELECTABLE_DAY, isSelectableDay);
@@ -579,6 +609,20 @@ const DatePicker = (($) => {
                             .calendarView('clearRange')
                             .calendarView('selectRange', this._startDay, this._endDay);
                     }
+                }
+
+                $(inputCheckin).html(this._startDay);
+                $(inputCheckout).html(this._endDay);
+
+                switch(this._focusOn) {
+                    case 'start':
+                        $(inputCheckin).addClass('focus');
+                        $(inputCheckout).removeClass('focus');
+                    break;
+                    case 'end':
+                    $(inputCheckout).addClass('focus');
+                    $(inputCheckin).removeClass('focus');
+                    break;
                 }
 
                 const changeEvent = $.Event(Event.CHANGE, {
@@ -818,6 +862,9 @@ const DatePicker = (($) => {
         })
         .on('change.bs.calendar-view', `${Selector.DATE_PICKER} ${Selector.CALENDAR_VIEW}`, function (event) {
             $(this).find(Selector.YEAR_MONTH).html(Pasoonate.trans(`jalali.month_name.${event.current.getMonth()}`) + ' ' + event.current.getYear()); 
+        })
+        .on('click', Selector.BTN_CLOSE, function () {
+            $(this).closest(Selector.DATE_PICKER).parent().find(Selector.DATA_TOGGLE).datePicker('hide');
         })
         .on('click', function (event) {
             let $activeDatePicker = $('.date-picker.show');
