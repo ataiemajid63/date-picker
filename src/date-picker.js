@@ -11,7 +11,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.3.1';
+    const VERSION = '1.3.2';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
@@ -60,7 +60,6 @@ const DatePicker = (($) => {
         INPUT_CHECKIN: '.date-picker-header #datePickerInputCheckin',
         INPUT_CHECKOUT: '.date-picker-header #datePickerInputCheckout',
         BTN_CLOSE: '.date-picker-header .date-picker-close'
-
     };
 
     class DatePicker {
@@ -232,6 +231,9 @@ const DatePicker = (($) => {
             this._autoLockDays();
             this._lockDays(this._options.lockBefore, this._options.lockAfter);
 
+            $(this._parent).find(Selector.INPUT_CHECKIN).html('ورود');
+            $(this._parent).find(Selector.INPUT_CHECKOUT).html('خروج');
+
             if(this._options.startDay) {
                 this._startDay = this._options.startDay;
                 this._options.startDay = undefined;
@@ -244,10 +246,12 @@ const DatePicker = (($) => {
 
             if(this._startDay) {
                 $calendarView.calendarView('startDay', this._startDay);
+                $(this._parent).find(Selector.INPUT_CHECKIN).html(Pasoonate.make().gregorian(this._startDay).jalali().format('yyyy/MM/dd'));
             }
 
             if(this._endDay) {
                 $calendarView.calendarView('endDay', this._endDay);
+                $(this._parent).find(Selector.INPUT_CHECKOUT).html(Pasoonate.make().gregorian(this._endDay).jalali().format('yyyy/MM/dd'));
             }
 
             if(this._startDay && this._endDay) {
@@ -620,8 +624,8 @@ const DatePicker = (($) => {
                         $(inputCheckout).removeClass('focus');
                     break;
                     case 'end':
-                    $(inputCheckout).addClass('focus');
-                    $(inputCheckin).removeClass('focus');
+                        $(inputCheckout).addClass('focus');
+                        $(inputCheckin).removeClass('focus');
                     break;
                 }
 
