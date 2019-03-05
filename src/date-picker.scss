@@ -47,7 +47,7 @@ $border-color: gray;
     overflow: hidden;
     border-radius: 0.25rem;
     width: 290px;
-    z-index: 1;
+    z-index: 1050;
 
     &.show {
         display: block;
@@ -66,7 +66,10 @@ $border-color: gray;
             font-weight: 600;
 
             .date-picker-close {
-                background-color: #fff;
+                background-color: transparent;
+                background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"><g id="cancel-music" transform="translate(0 0)"><path id="Path_962" data-name="Path 962" d="M8.664,7l4.992-4.992A1.177,1.177,0,0,0,11.992.344L7,5.336,2.009.344A1.177,1.177,0,0,0,.345,2.008L5.336,7,.345,11.991a1.177,1.177,0,1,0,1.664,1.664L7,8.663l4.992,4.992a1.177,1.177,0,0,0,1.664-1.664Z" transform="translate(0)" fill="%23ffffff" fill-rule="evenodd"/></g></svg>');
+                background-repeat: no-repeat;
+                padding: 8px;
             }
         }
 

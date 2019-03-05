@@ -372,7 +372,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.2.3';
+    const VERSION = '1.3.1';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
@@ -752,7 +752,7 @@ const DatePicker = (($) => {
             );
             $pickerHeader.append(
                 $('<div class="date-picker-inputs">').html(
-                    '<div class="form-control focus" id="datePickerInputCheckin" >ورود</div>' +
+                    '<div class="form-control" id="datePickerInputCheckin" >ورود</div>' +
                     '<span>-</span>' +
                     '<div class="form-control" id="datePickerInputCheckout">خروج</div>' 
                 )
@@ -1226,6 +1226,12 @@ const DatePicker = (($) => {
         })
         .on('click', Selector.BTN_CLOSE, function () {
             $(this).closest(Selector.DATE_PICKER).parent().find(Selector.DATA_TOGGLE).datePicker('hide');
+        })
+        .on('click', Selector.INPUT_CHECKIN, function () {
+            $(this).closest(Selector.DATE_PICKER).parent().find(Selector.DATA_TOGGLE).datePicker('focusOn', 'start');
+        })
+        .on('click', Selector.INPUT_CHECKOUT, function () {
+            $(this).closest(Selector.DATE_PICKER).parent().find(Selector.DATA_TOGGLE).datePicker('focusOn', 'end');
         })
         .on('click', function (event) {
             let $activeDatePicker = $('.date-picker.show');
