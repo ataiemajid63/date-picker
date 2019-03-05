@@ -372,7 +372,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.3.2';
+    const VERSION = '1.3.3';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
@@ -817,8 +817,8 @@ const DatePicker = (($) => {
                 const selectedDay = event.relatedTarget.dataset.gregorianDate;
                 const days = this._dataKeyByDay();
                 const pasoonate = Pasoonate.make().gregorian(selectedDay);
-                const inputCheckin = $(parent).find('#datePickerInputCheckin')[0];
-                const inputCheckout = $(parent).find('#datePickerInputCheckout')[0];
+                const inputCheckin = $(parent).find(Selector.INPUT_CHECKIN);
+                const inputCheckout = $(parent).find(Selector.INPUT_CHECKOUT);
 
                 let isSelectableDay = {};
                 $calendarView.calendarView('hasClass', selectedDay, ClassName.SELECTABLE_DAY, isSelectableDay);
@@ -976,9 +976,6 @@ const DatePicker = (($) => {
                     }
                 }
 
-                $(inputCheckin).html(this._startDay);
-                $(inputCheckout).html(this._endDay);
-
                 switch(this._focusOn) {
                     case 'start':
                         $(inputCheckin).addClass('focus');
@@ -988,6 +985,14 @@ const DatePicker = (($) => {
                         $(inputCheckout).addClass('focus');
                         $(inputCheckin).removeClass('focus');
                     break;
+                }
+
+                if(this._startDay) {
+                    $(inputCheckin).html(Pasoonate.make().gregorian(this._startDay).jalali().format('yyyy/MM/dd'));
+                }
+
+                if(this._endDay) {
+                    $(inputCheckout).html(Pasoonate.make().gregorian(this._endDay).jalali().format('yyyy/MM/dd'));
                 }
 
                 const changeEvent = $.Event(Event.CHANGE, {
