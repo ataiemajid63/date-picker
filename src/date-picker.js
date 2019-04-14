@@ -11,7 +11,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.3.4';
+    const VERSION = '1.3.5';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
@@ -184,6 +184,8 @@ const DatePicker = (($) => {
         }
 
         options([options]) {
+            options.data = this._updateDataOption(options.data);
+
             Object.assign(this._options, options);
             
             this.refresh();
@@ -831,6 +833,24 @@ const DatePicker = (($) => {
 
                 firstDay.addDay(1);
             }
+        }
+
+        _updateDataOption(inputData) {
+            const data = [];
+            const oldData = this._dataKeyByDay();
+            const inputData = inputData || [];
+            let day = null;
+
+            for(let i = 0; i < inputData.length; i++) {
+                day = inputData[i].day;
+                oldData[day] = inputData[i];
+            }
+
+            for(item of oldData) {
+                data.push(item);
+            }
+
+            return data;
         }
 
         // Static
