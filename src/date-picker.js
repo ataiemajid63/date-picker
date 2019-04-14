@@ -722,7 +722,6 @@ const DatePicker = (($) => {
                 const firstDay = Pasoonate.make(range.first).gregorian().setTime(0, 0, 0);
                 const lastDay = Pasoonate.make(range.last).gregorian().setTime(0, 0, 0);
                 
-                // while(startDay.getTimestamp() <= lastDay.getTimestamp()) {
                 while(startDay.beforeThanOrEqual(lastDay)) {
                     startDay.gregorian().addDay(1);
                     
@@ -738,7 +737,7 @@ const DatePicker = (($) => {
 
                     if(findDisabled && findFirstDisabled !== d) {
                         $($calendarView).calendarView('addClass', d, ClassName.LOCK_DAY)
-                    }
+                    }                    
                 }
 
                 findDisabled = false;
@@ -838,16 +837,17 @@ const DatePicker = (($) => {
         _updateDataOption(inputData) {
             const data = [];
             const oldData = this._dataKeyByDay();
-            const inputData = inputData || [];
             let day = null;
-
+            
+            inputData = inputData || [];
+            
             for(let i = 0; i < inputData.length; i++) {
                 day = inputData[i].day;
                 oldData[day] = inputData[i];
             }
 
-            for(item of oldData) {
-                data.push(item);
+            for(let i in oldData) {
+                data.push(oldData[i]);
             }
 
             return data;

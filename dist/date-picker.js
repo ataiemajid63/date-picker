@@ -372,7 +372,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.3.4';
+    const VERSION = '1.3.5';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
@@ -545,6 +545,8 @@ const DatePicker = (($) => {
         }
 
         options([options]) {
+            options.data = this._updateDataOption(options.data);
+
             Object.assign(this._options, options);
             
             this.refresh();
@@ -1081,7 +1083,6 @@ const DatePicker = (($) => {
                 const firstDay = Pasoonate.make(range.first).gregorian().setTime(0, 0, 0);
                 const lastDay = Pasoonate.make(range.last).gregorian().setTime(0, 0, 0);
                 
-                // while(startDay.getTimestamp() <= lastDay.getTimestamp()) {
                 while(startDay.beforeThanOrEqual(lastDay)) {
                     startDay.gregorian().addDay(1);
                     
@@ -1097,7 +1098,7 @@ const DatePicker = (($) => {
 
                     if(findDisabled && findFirstDisabled !== d) {
                         $($calendarView).calendarView('addClass', d, ClassName.LOCK_DAY)
-                    }
+                    }                    
                 }
 
                 findDisabled = false;
@@ -1192,6 +1193,25 @@ const DatePicker = (($) => {
 
                 firstDay.addDay(1);
             }
+        }
+
+        _updateDataOption(inputData) {
+            const data = [];
+            const oldData = this._dataKeyByDay();
+            let day = null;
+            
+            inputData = inputData || [];
+            
+            for(let i = 0; i < inputData.length; i++) {
+                day = inputData[i].day;
+                oldData[day] = inputData[i];
+            }
+
+            for(let i in oldData) {
+                data.push(oldData[i]);
+            }
+
+            return data;
         }
 
         // Static
