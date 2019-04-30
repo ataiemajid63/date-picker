@@ -372,7 +372,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.3.5';
+    const VERSION = '1.3.6';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
