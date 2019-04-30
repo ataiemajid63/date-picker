@@ -11,7 +11,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.3.5';
+    const VERSION = '1.3.6';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
@@ -771,11 +771,18 @@ const DatePicker = (($) => {
             if(before) {
                 const beforeDay = Pasoonate.make().gregorian(before).setTime(0, 0, 0);
 
+                let isSelectableDay = {value: false};
+                $($calendarView).calendarView('hasClass', before, ClassName.SELECTABLE_DAY, isSelectableDay);
+                
+                if(isSelectableDay.value) {
+                    $($calendarView).calendarView('addClass', before, ClassName.LOCK_DAY);
+                }
+
                 while(beforeDay.afterThan(firstDay)) {
                     beforeDay.gregorian().subDay(1);
                     
                     const d = beforeDay.gregorian().format('yyyy-MM-dd');
-                    $($calendarView).calendarView('addClass', d, ClassName.LOCK_DAY)
+                    $($calendarView).calendarView('addClass', d, ClassName.LOCK_DAY);
                 }
             }
 
