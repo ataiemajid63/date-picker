@@ -11,7 +11,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.3.6';
+    const VERSION = '1.5.0';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
@@ -425,7 +425,7 @@ const DatePicker = (($) => {
             $calendarFooter.html($('<div class="date-picker-notice">').html(this._options.notice || ''));
             $calendarFooter.append($('<button type="button" class="btn btn-sm btn-outline-secondary">').text('پاک کردن').click(() => {
                 this.clear();
-                this.hide();
+                // this.hide();
             }));
 
             $calendarView.append($calendarHeader).append($calendarBody).append($calendarFooter);
