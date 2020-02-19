@@ -9,7 +9,7 @@ const CalendarView = (($) => {
      */
 
     const NAME = 'calendarView'
-    const VERSION = '1.0.6'
+    const VERSION = '1.1.2'
     const DATA_KEY = 'bs.calendar-view'
     const EVENT_KEY = `.${DATA_KEY}`
     const DATA_API_KEY = '.data-api'
@@ -274,9 +274,15 @@ const CalendarView = (($) => {
             isChange = (year && year != this._current.getYear()) | (month && month != this._current.getMonth()) | (day && day != this._current.getDay());
 
             if(isChange) {
-                this._current.setYear(parseInt(year) || this._current.getYear());
-                this._current.setMonth(parseInt(month) || this._current.getMonth());
-                this._current.setDay(parseInt(day) || this._current.getDay());
+                let newYear = parseInt(year) || this._current.getYear();
+                let newMonth = parseInt(month) || this._current.getMonth();
+                let newDay = parseInt(day) || this._current.getDay();
+                
+                if(this._current._currentCalendar.daysInMonth(newYear, newMonth) < newDay) {
+                    newDay = this._current._currentCalendar.daysInMonth(newYear, newMonth);
+                }
+
+                this._current[this._calendar](`${newYear}/${newMonth}/${newDay}`);
 
                 const changeEvent = $.Event(Event.CHANGE, {
                     old: old,
@@ -372,7 +378,7 @@ const DatePicker = (($) => {
      */
 
     const NAME = 'datePicker';
-    const VERSION = '1.5.0';
+    const VERSION = '1.5.1';
     const DATA_KEY = 'bs.date-picker';
     const EVENT_KEY = `.${DATA_KEY}`;
     const DATA_API_KEY = '.data-api';
